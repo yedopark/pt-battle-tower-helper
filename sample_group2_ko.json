@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "name": "샘플: Gen4 Group2 일부(테스트)",
+    "source": "Bulbapedia Group 2 table (partial)",
+    "moveIndex_ko": {
+      "파도타기": { "type_ko": "물", "power": 95 },
+      "냉동빔": { "type_ko": "얼음", "power": 95 },
+      "10만볼트": { "type_ko": "전기", "power": 95 },
+      "지진": { "type_ko": "땅", "power": 100 },
+      "역린": { "type_ko": "드래곤", "power": 120 },
+      "불꽃엄니": { "type_ko": "불꽃", "power": 65 },
+      "불릿펀치": { "type_ko": "강철", "power": 40 },
+      "코멧펀치": { "type_ko": "강철", "power": 100 },
+      "대폭발": { "type_ko": "노말", "power": 250 }
+    }
+  },
+  "sets": [
+    {
+      "set_id": "0491",
+      "pokemon_ko": "라프라스",
+      "types_ko": ["물", "얼음"],
+      "item_ko": "기합의띠",
+      "nature": "조심",
+      "evs": {"HP":252,"Atk":0,"Def":0,"SpA":252,"SpD":0,"Spe":0},
+      "moves": [
+        {"name_ko":"냉동빔","type_ko":"얼음","power":95,"damage_class_ko":"특수"},
+        {"name_ko":"파도타기","type_ko":"물","power":95,"damage_class_ko":"특수"},
+        {"name_ko":"번개","type_ko":"전기","power":120,"damage_class_ko":"특수"},
+        {"name_ko":"노래하기","type_ko":"노말","power":0,"damage_class_ko":"변화"}
+      ]
+    },
+    {
+      "set_id": "0907",
+      "pokemon_ko": "크레세리아",
+      "types_ko": ["에스퍼"],
+      "item_ko": "뜨거운바위",
+      "nature": "대담",
+      "evs": {"HP":0,"Atk":0,"Def":0,"SpA":0,"SpD":252,"Spe":252},
+      "moves": [
+        {"name_ko":"사이코키네시스","type_ko":"에스퍼","power":90,"damage_class_ko":"특수"},
+        {"name_ko":"솔라빔","type_ko":"풀","power":120,"damage_class_ko":"특수"},
+        {"name_ko":"달의불빛","type_ko":"에스퍼","power":0,"damage_class_ko":"변화"},
+        {"name_ko":"쾌청","type_ko":"불꽃","power":0,"damage_class_ko":"변화"}
+      ]
+    },
+    {
+      "set_id": "0643",
+      "pokemon_ko": "포레트스",
+      "types_ko": ["벌레","강철"],
+      "item_ko": "오카열매",
+      "nature": "무사태평",
+      "evs": {"HP":0,"Atk":252,"Def":252,"SpA":0,"SpD":0,"Spe":0},
+      "moves": [
+        {"name_ko":"자이로볼","type_ko":"강철","power":0,"damage_class_ko":"물리"},
+        {"name_ko":"벌레먹음","type_ko":"벌레","power":60,"damage_class_ko":"물리"},
+        {"name_ko":"리벤지","type_ko":"격투","power":60,"damage_class_ko":"물리"},
+        {"name_ko":"카운터","type_ko":"격투","power":0,"damage_class_ko":"물리"}
+      ]
+    }
+  ]
+}
