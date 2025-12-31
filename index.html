@@ -2,361 +2,271 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PT 배틀타워 싱글 조언봇 (21+)</title>
 
-  <!-- (선택) PWA -->
+  <link rel="stylesheet" href="./style.css" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <meta name="theme-color" content="#0b1220" />
-
-  <style>
-    :root{
-      --bg:#0b1220;
-      --panel:#0f1a2b;
-      --panel2:#0d1626;
-      --text:#e7eefc;
-      --muted:#aab7d4;
-      --line:#22304a;
-      --btn:#1b2a44;
-      --btn2:#23365a;
-      --danger:#8a2b2b;
-      --accent:#4da3ff;
-      --ok:#4ad17a;
-      --radius:16px;
-      --radius2:12px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      --sans: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background:linear-gradient(180deg,#070c16 0%, var(--bg) 35%, #070c16 100%);
-      color:var(--text);
-      font-family:var(--sans);
-    }
-    a{color:var(--accent)}
-    .wrap{
-      max-width:980px;
-      margin:0 auto;
-      padding:28px 16px 50px;
-    }
-    h1{
-      margin:0 0 6px;
-      font-size:28px;
-      letter-spacing:-0.4px;
-    }
-    .subtitle{
-      color:var(--muted);
-      margin:0 0 20px;
-      font-size:14px;
-    }
-    .card{
-      background:rgba(15,26,43,.85);
-      border:1px solid rgba(34,48,74,.8);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px 18px;
-      margin:14px 0;
-    }
-    .card h2{
-      margin:0 0 14px;
-      font-size:22px;
-      letter-spacing:-0.3px;
-    }
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    .grid3{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:12px;
-    }
-    @media (max-width: 920px){
-      .grid3{grid-template-columns:1fr}
-      .grid2{grid-template-columns:1fr}
-    }
-    label{
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      margin:10px 0 6px;
-    }
-    input, select{
-      width:100%;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(34,48,74,.9);
-      background:rgba(13,22,38,.9);
-      color:var(--text);
-      outline:none;
-    }
-    input::placeholder{color:#7f8cad}
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:flex-end;
-      flex-wrap:wrap;
-    }
-    .row > .grow{flex:1 1 260px}
-    .row > .fixed{flex:0 0 auto}
-    .btn{
-      background:var(--btn);
-      border:1px solid rgba(34,48,74,.95);
-      color:var(--text);
-      padding:10px 14px;
-      border-radius:12px;
-      cursor:pointer;
-      transition:.15s;
-      font-weight:600;
-    }
-    .btn:hover{background:var(--btn2)}
-    .btn.danger{background:rgba(138,43,43,.35); border-color:rgba(138,43,43,.6)}
-    .status{
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-      word-break:break-word;
-    }
-    .pill{
-      display:inline-block;
-      padding:2px 10px;
-      border-radius:999px;
-      border:1px solid rgba(34,48,74,.9);
-      background:rgba(13,22,38,.7);
-      color:var(--muted);
-      font-size:12px;
-    }
-    .mini{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:6px;
-    }
-    .partyCard{
-      background:rgba(13,22,38,.65);
-      border:1px solid rgba(34,48,74,.85);
-      border-radius:var(--radius2);
-      padding:14px;
-    }
-    .partyTitle{
-      font-size:16px;
-      font-weight:800;
-      margin:0 0 8px;
-    }
-    .btnRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    /* 결과 박스 */
-    #resultBox{
-      margin-top:12px;
-      background:rgba(13,22,38,.65);
-      border:1px solid rgba(34,48,74,.85);
-      border-radius:var(--radius2);
-      padding:14px;
-    }
-    #resultBox h3{
-      margin:0 0 6px;
-      font-size:18px;
-    }
-    #resultBox .small{
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:10px;
-    }
-    .sep{
-      border:0;
-      border-top:1px solid rgba(34,48,74,.85);
-      margin:10px 0;
-    }
-    ul{margin:0; padding-left:18px}
-    li{margin:8px 0; color:var(--text)}
-    .mono{font-family:var(--mono); white-space:pre-wrap}
-
-    /* 게이지 바 */
-    .bar{
-      width:100%;
-      height:10px;
-      border-radius:999px;
-      border:1px solid rgba(34,48,74,.9);
-      background:rgba(10,16,28,.8);
-      overflow:hidden;
-      margin-top:6px;
-    }
-    .barFill{
-      height:100%;
-      width:0%;
-      background:linear-gradient(90deg, rgba(77,163,255,.9), rgba(74,209,122,.9));
-    }
-
-    .foot{
-      margin-top:18px;
-      color:var(--muted);
-      font-size:12px;
-      text-align:center;
-    }
-
-    details{
-      border:1px dashed rgba(34,48,74,.85);
-      border-radius:12px;
-      padding:10px 12px;
-      background:rgba(13,22,38,.45);
-      margin-top:10px;
-    }
-    summary{
-      cursor:pointer;
-      color:var(--muted);
-      font-weight:700;
-    }
-  </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <h1>PT 배틀타워 싱글 조언봇 (21+)</h1>
-    <p class="subtitle">내 파티 저장 → 상대 입력 → 추천행동/이유 즉시 출력</p>
+  <header class="top">
+    <div class="wrap">
+      <h1>PT 배틀타워 싱글 조언봇 (21+)</h1>
+      <p class="sub">내 파티 입력/검증 → 상대 입력 → 추천행동/기술/이유 즉시 출력</p>
+    </div>
+  </header>
 
-    <!-- DB 로드 -->
+  <main class="wrap">
+    <!-- DB -->
     <section class="card">
       <h2>DB 로드</h2>
-
       <div class="row">
-        <div class="grow">
-          <label for="dbSelect">DB 선택</label>
-          <select id="dbSelect">
-            <option value="./bt_group2_ko.json">실DB(Group2 전체, build_db.py로 생성)</option>
-            <option value="./sample_group2_ko.json">샘플(Group2 일부)</option>
+        <div class="col">
+          <label class="label">DB 선택</label>
+          <select id="dbSelect" class="input">
+            <!-- 권장: repo에 data/bt_group2_ko.json 넣기 -->
+            <option value="./data/bt_group2_ko.json">실DB(Group2 전체, build_db.py로 생성)</option>
+            <option value="./data/sample_group2_ko.json">샘플(Group2 일부)</option>
+
+            <!-- (호환) 혹시 루트에 파일 두는 경우 -->
+            <option value="./bt_group2_ko.json">실DB(루트에 있는 bt_group2_ko.json)</option>
           </select>
         </div>
-        <div class="fixed">
-          <button class="btn" id="btnLoadDb">불러오기</button>
+        <div class="col end">
+          <button id="btnLoadDb" class="btn">불러오기</button>
         </div>
       </div>
-
-      <div class="status" id="dbStatus">DB 로드 안됨</div>
-      <div class="mini">
-        참고: Group 2는 Platinum/HGSS 배틀프런티어 시설에서 NPC가 쓰는 세트 목록(내부 데이터 기반)입니다.
+      <div class="status" id="dbStatus">DB 미로드</div>
+      <div class="note">
+        참고: Group2는 Platinum/HGSS 배틀프런티어 시설에서 NPC가 쓰는 세트 목록 기반입니다.
       </div>
     </section>
 
-    <!-- 내 파티 -->
+    <!-- PARTY MANAGER -->
     <section class="card">
-      <h2>내 파티 (저장됨)</h2>
+      <h2>내 파티 (수정 가능 + 검증)</h2>
 
-      <!-- 상대/내 파티 포켓몬 자동완성 목록 -->
-      <datalist id="oppList"></datalist>
+      <div class="row">
+        <div class="col">
+          <label class="label">파티 이름(자동 생성됨)</label>
+          <input id="partyName" class="input" placeholder="예: 스이-크레-히드" />
+          <div class="help" id="partyNameHelp"></div>
+        </div>
+
+        <div class="col">
+          <label class="label">저장된 파티</label>
+          <select id="partySelect" class="input"></select>
+          <div class="help">파티는 삭제 전까지 계속 저장됩니다(localStorage).</div>
+        </div>
+
+        <div class="col end">
+          <label class="label">&nbsp;</label>
+          <div class="btnRow">
+            <button id="btnSaveParty" class="btn">파티 저장/업데이트</button>
+            <button id="btnLoadParty" class="btn secondary">파티 불러오기</button>
+            <button id="btnDeleteParty" class="btn danger">파티 삭제</button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sep"/>
 
       <div class="grid3">
-        <div class="partyCard">
-          <div class="partyTitle">1) <span class="pill">포켓몬/아이템/기술</span></div>
+        <!-- Member 1 -->
+        <div class="panel">
+          <h3>1) 내 포켓몬</h3>
 
-          <label for="p1_name">포켓몬</label>
-          <input id="p1_name" list="oppList" placeholder="예: 스이쿤" />
+          <div class="field">
+            <label class="label">포켓몬(한글)</label>
+            <input id="m1_name" class="input" list="pokemonList" placeholder="예: 스이쿤" />
+            <div class="help" id="m1_name_help"></div>
+          </div>
 
-          <label for="p1_item">지닌물건</label>
-          <input id="p1_item" placeholder="예: 먹다남은음식" />
+          <div class="row">
+            <div class="col">
+              <div class="field">
+                <label class="label">타입1(자동/수동)</label>
+                <select id="m1_t1" class="input"></select>
+                <div class="help" id="m1_t1_help"></div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="field">
+                <label class="label">타입2(선택)</label>
+                <select id="m1_t2" class="input"></select>
+                <div class="help" id="m1_t2_help"></div>
+              </div>
+            </div>
+          </div>
 
-          <label>기술 1~4</label>
-          <input id="p1_m1" placeholder="기술1" />
-          <input id="p1_m2" placeholder="기술2" />
-          <input id="p1_m3" placeholder="기술3" />
-          <input id="p1_m4" placeholder="기술4" />
+          <div class="field">
+            <label class="label">지닌물건</label>
+            <input id="m1_item" class="input" list="itemList" placeholder="예: 먹다남은음식" />
+            <div class="help" id="m1_item_help"></div>
+          </div>
+
+          <div class="field">
+            <label class="label">기술 1</label>
+            <input id="m1_mv1" class="input" list="moveList" placeholder="예: 파도타기" />
+            <div class="help" id="m1_mv1_help"></div>
+          </div>
+          <div class="field">
+            <label class="label">기술 2</label>
+            <input id="m1_mv2" class="input" list="moveList" placeholder="예: 냉동빔" />
+            <div class="help" id="m1_mv2_help"></div>
+          </div>
+          <div class="field">
+            <label class="label">기술 3</label>
+            <input id="m1_mv3" class="input" list="moveList" placeholder="예: 10만볼트" />
+            <div class="help" id="m1_mv3_help"></div>
+          </div>
+          <div class="field">
+            <label class="label">기술 4</label>
+            <input id="m1_mv4" class="input" list="moveList" placeholder="예: 잠자기" />
+            <div class="help" id="m1_mv4_help"></div>
+          </div>
         </div>
 
-        <div class="partyCard">
-          <div class="partyTitle">2) <span class="pill">포켓몬/아이템/기술</span></div>
+        <!-- Member 2 -->
+        <div class="panel">
+          <h3>2) 내 포켓몬</h3>
 
-          <label for="p2_name">포켓몬</label>
-          <input id="p2_name" list="oppList" placeholder="예: 한카리아스" />
+          <div class="field">
+            <label class="label">포켓몬(한글)</label>
+            <input id="m2_name" class="input" list="pokemonList" placeholder="예: 한카리아스" />
+            <div class="help" id="m2_name_help"></div>
+          </div>
 
-          <label for="p2_item">지닌물건</label>
-          <input id="p2_item" placeholder="예: 리샘열매" />
+          <div class="row">
+            <div class="col">
+              <div class="field">
+                <label class="label">타입1(자동/수동)</label>
+                <select id="m2_t1" class="input"></select>
+                <div class="help" id="m2_t1_help"></div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="field">
+                <label class="label">타입2(선택)</label>
+                <select id="m2_t2" class="input"></select>
+                <div class="help" id="m2_t2_help"></div>
+              </div>
+            </div>
+          </div>
 
-          <label>기술 1~4</label>
-          <input id="p2_m1" placeholder="기술1" />
-          <input id="p2_m2" placeholder="기술2" />
-          <input id="p2_m3" placeholder="기술3" />
-          <input id="p2_m4" placeholder="기술4" />
+          <div class="field">
+            <label class="label">지닌물건</label>
+            <input id="m2_item" class="input" list="itemList" placeholder="예: 리샘열매" />
+            <div class="help" id="m2_item_help"></div>
+          </div>
+
+          <div class="field"><label class="label">기술 1</label><input id="m2_mv1" class="input" list="moveList" placeholder="예: 지진" /><div class="help" id="m2_mv1_help"></div></div>
+          <div class="field"><label class="label">기술 2</label><input id="m2_mv2" class="input" list="moveList" placeholder="예: 역린" /><div class="help" id="m2_mv2_help"></div></div>
+          <div class="field"><label class="label">기술 3</label><input id="m2_mv3" class="input" list="moveList" placeholder="예: 맹독" /><div class="help" id="m2_mv3_help"></div></div>
+          <div class="field"><label class="label">기술 4</label><input id="m2_mv4" class="input" list="moveList" placeholder="예: 불꽃엄니" /><div class="help" id="m2_mv4_help"></div></div>
         </div>
 
-        <div class="partyCard">
-          <div class="partyTitle">3) <span class="pill">포켓몬/아이템/기술</span></div>
+        <!-- Member 3 -->
+        <div class="panel">
+          <h3>3) 내 포켓몬</h3>
 
-          <label for="p3_name">포켓몬</label>
-          <input id="p3_name" list="oppList" placeholder="예: 메타그로스" />
+          <div class="field">
+            <label class="label">포켓몬(한글)</label>
+            <input id="m3_name" class="input" list="pokemonList" placeholder="예: 메타그로스" />
+            <div class="help" id="m3_name_help"></div>
+          </div>
 
-          <label for="p3_item">지닌물건</label>
-          <input id="p3_item" placeholder="예: 생명의구슬" />
+          <div class="row">
+            <div class="col">
+              <div class="field">
+                <label class="label">타입1(자동/수동)</label>
+                <select id="m3_t1" class="input"></select>
+                <div class="help" id="m3_t1_help"></div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="field">
+                <label class="label">타입2(선택)</label>
+                <select id="m3_t2" class="input"></select>
+                <div class="help" id="m3_t2_help"></div>
+              </div>
+            </div>
+          </div>
 
-          <label>기술 1~4</label>
-          <input id="p3_m1" placeholder="기술1" />
-          <input id="p3_m2" placeholder="기술2" />
-          <input id="p3_m3" placeholder="기술3" />
-          <input id="p3_m4" placeholder="기술4" />
+          <div class="field">
+            <label class="label">지닌물건</label>
+            <input id="m3_item" class="input" list="itemList" placeholder="예: 생명의구슬" />
+            <div class="help" id="m3_item_help"></div>
+          </div>
+
+          <div class="field"><label class="label">기술 1</label><input id="m3_mv1" class="input" list="moveList" placeholder="예: 칼춤" /><div class="help" id="m3_mv1_help"></div></div>
+          <div class="field"><label class="label">기술 2</label><input id="m3_mv2" class="input" list="moveList" placeholder="예: 불릿펀치" /><div class="help" id="m3_mv2_help"></div></div>
+          <div class="field"><label class="label">기술 3</label><input id="m3_mv3" class="input" list="moveList" placeholder="예: 코멧펀치" /><div class="help" id="m3_mv3_help"></div></div>
+          <div class="field"><label class="label">기술 4</label><input id="m3_mv4" class="input" list="moveList" placeholder="예: 대폭발" /><div class="help" id="m3_mv4_help"></div></div>
         </div>
       </div>
 
-      <div class="btnRow">
-        <button class="btn" id="btnSaveParty">파티 저장</button>
-        <button class="btn" id="btnLoadParty">저장된 파티 불러오기</button>
-        <button class="btn danger" id="btnResetParty">파티 초기화</button>
+      <div class="row mt">
+        <div class="col">
+          <button id="btnValidateParty" class="btn">파티 입력완료(검증)</button>
+          <span class="statusInline" id="partyStatus">검증 전</span>
+        </div>
+        <div class="col end">
+          <label class="label">현재 내 선봉(활성)</label>
+          <select id="activeSelect" class="input"></select>
+        </div>
       </div>
-      <div class="status" id="partyStatus">-</div>
+
+      <datalist id="pokemonList"></datalist>
+      <datalist id="moveList"></datalist>
+      <datalist id="itemList"></datalist>
+
+      <div class="note">
+        ※ DB에 없는 포켓몬/기술/아이템은 추천 정확도를 크게 떨어뜨리므로, 검증을 통과해야 추천이 실행됩니다.
+      </div>
     </section>
 
-    <!-- 상대 입력 -->
+    <!-- OPPONENT -->
     <section class="card">
       <h2>상대 입력 → 추천행동</h2>
 
-      <div class="grid2">
-        <div>
-          <label for="activeSelect">현재 내 선봉(활성)</label>
-          <select id="activeSelect">
-            <option value="p1">p1</option>
-            <option value="p2">p2</option>
-            <option value="p3">p3</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="oppName">상대 포켓몬(한글명 검색)</label>
-          <input id="oppName" list="oppList" placeholder="예: 팬텀 / 라프라스 / 겟핸보숭 ..." />
-        </div>
+      <div class="field">
+        <label class="label">상대 포켓몬(한글명 검색)</label>
+        <input id="oppName" class="input" list="pokemonList" placeholder="예: 크레세리아, 라프라스, 팬텀(=고스트 전기X…)" />
+        <div class="help" id="oppNameHelp"></div>
       </div>
 
-      <details>
-        <summary>상대 관측 정보(선택, 알면 정확도 ↑)</summary>
-        <div class="grid2" style="margin-top:8px">
-          <div>
-            <label for="oppItemObs">상대 지닌물건(관측)</label>
-            <input id="oppItemObs" placeholder="예: 구애스카프 / 선제공격손톱 ..." />
+      <details class="details">
+        <summary>상대 관측 정보(선택, 알면 정확도↑)</summary>
+        <div class="row mt">
+          <div class="col">
+            <label class="label">상대 지닌물건(관측)</label>
+            <input id="oppItemObs" class="input" list="itemList" placeholder="예: 먹다남은음식" />
           </div>
-          <div>
-            <label for="oppMoveObs">상대 기술(관측)</label>
-            <input id="oppMoveObs" placeholder="예: 번개펀치 / 전기자석파 ..." />
+          <div class="col">
+            <label class="label">상대 기술(관측)</label>
+            <input id="oppMoveObs" class="input" list="moveList" placeholder="예: 전기자석파" />
           </div>
         </div>
       </details>
 
-      <div class="btnRow">
-        <button class="btn" id="btnRecommend">추천행동 계산</button>
+      <div class="row mt">
+        <div class="col">
+          <button id="btnRecommend" class="btn">추천행동 계산</button>
+          <span class="statusInline" id="recStatus"></span>
+        </div>
       </div>
 
-      <div id="resultBox">
-        <div class="mono" style="color:var(--muted)">결과가 여기에 표시됩니다.</div>
+      <div id="resultBox" class="result"></div>
+
+      <div class="footnote">
+        주의: 이 앱은 “세트 DB(기술/아이템/EV 등)” 기반 룰 엔진입니다. 실제 실전은 급소/명중/턴 선택 등 변수가 있어 100% 보장은 불가능합니다.
       </div>
     </section>
+  </main>
 
-    <div class="foot">
-      주의: 이 앱은 “세트 DB(기술/아이템/EV 등)” 기반 룰 엔진입니다. 실제 실전은 급소/명중/턴 선택 등 변수가 있어 100% 보장은 불가합니다.
-    </div>
-  </div>
-
-  <script src="./app.js"></script>
+  <script src="./app.js" defer></script>
 </body>
 </html>
