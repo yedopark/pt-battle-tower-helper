@@ -5,16 +5,247 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PT 배틀타워 싱글 조언봇 (21+)</title>
 
-  <!-- ✅ styles.css (복수 s) -->
+  <!-- ✅ GitHub Pages 하위경로 대응: 반드시 상대경로 -->
   <link rel="stylesheet" href="./styles.css" />
-
-  <!-- ✅ manifest도 상대경로 -->
   <link rel="manifest" href="./manifest.webmanifest" />
 </head>
-<body>
-  <!-- 너의 기존 본문 그대로 -->
 
-  <!-- ✅ app.js도 상대경로 -->
+<body>
+  <header class="top">
+    <h1>PT 배틀타워 싱글 조언봇 (21+)</h1>
+    <p class="sub">내 파티 입력/검증 → 상대 입력 → 추천행동/기술/이유 즉시 출력</p>
+  </header>
+
+  <main class="wrap">
+
+    <!-- DB LOAD -->
+    <section class="card">
+      <h2>DB 로드</h2>
+      <div class="row">
+        <label class="label">DB 선택</label>
+        <select id="dbSelect">
+          <!-- 네 repo에 있는 파일명 기준 -->
+          <option value="./bt_group2_ko.json">실DB(Group2 전체, build_db.py로 생성)</option>
+          <option value="./sample_group2_ko.json">샘플(Group2 일부)</option>
+        </select>
+        <button id="btnLoadDb">불러오기</button>
+      </div>
+      <div id="dbStatus" class="hint">DB 미로드</div>
+      <div class="hint">참고: Group2는 Platinum/HGSS 배틀프런티어 시설에서 NPC가 쓰는 세트 목록 기반입니다.</div>
+    </section>
+
+    <!-- PARTY -->
+    <section class="card">
+      <h2>내 파티 (수정 가능 + 검증)</h2>
+
+      <div class="row">
+        <label class="label">파티 이름(자동 생성됨)</label>
+        <input id="partyName" type="text" placeholder="예: 스이-한카-메타" />
+      </div>
+
+      <div class="row">
+        <label class="label">저장된 파티</label>
+        <select id="partySelect"></select>
+        <button id="btnPartySave">파티 저장/업데이트</button>
+        <button id="btnPartyLoad">파티 불러오기</button>
+        <button id="btnPartyDelete" class="danger">파티 삭제</button>
+      </div>
+
+      <div class="row">
+        <button id="btnPartyValidate" class="primary">입력완료(검증)</button>
+        <div id="partyStatus" class="hint"></div>
+      </div>
+
+      <hr class="sep"/>
+
+      <!-- Pokemon 1~3 -->
+      <div class="grid3">
+        <!-- 1 -->
+        <div class="pokeBox">
+          <h3>1) 내 포켓몬</h3>
+
+          <label>포켓몬(한글)</label>
+          <div class="withMark">
+            <input id="m1_name" list="pokemonList" placeholder="예: 스이쿤" />
+            <span id="m1_name_mark" class="mark"></span>
+          </div>
+
+          <label>타입1(자동/수동)</label>
+          <select id="m1_t1"></select>
+
+          <label>타입2(선택)</label>
+          <select id="m1_t2"></select>
+
+          <label>지닌물건</label>
+          <div class="withMark">
+            <input id="m1_item" list="itemList" placeholder="예: 먹다남은음식" />
+            <span id="m1_item_mark" class="mark"></span>
+          </div>
+
+          <label>기술 1</label>
+          <div class="withMark">
+            <input id="m1_mv1" list="moveList" placeholder="예: 파도타기" />
+            <span id="m1_mv1_mark" class="mark"></span>
+          </div>
+
+          <label>기술 2</label>
+          <div class="withMark">
+            <input id="m1_mv2" list="moveList" placeholder="예: 냉동빔" />
+            <span id="m1_mv2_mark" class="mark"></span>
+          </div>
+
+          <label>기술 3</label>
+          <div class="withMark">
+            <input id="m1_mv3" list="moveList" placeholder="예: 10만볼트" />
+            <span id="m1_mv3_mark" class="mark"></span>
+          </div>
+
+          <label>기술 4</label>
+          <div class="withMark">
+            <input id="m1_mv4" list="moveList" placeholder="예: 잠자기" />
+            <span id="m1_mv4_mark" class="mark"></span>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="pokeBox">
+          <h3>2) 내 포켓몬</h3>
+
+          <label>포켓몬(한글)</label>
+          <div class="withMark">
+            <input id="m2_name" list="pokemonList" placeholder="예: 한카리아스" />
+            <span id="m2_name_mark" class="mark"></span>
+          </div>
+
+          <label>타입1(자동/수동)</label>
+          <select id="m2_t1"></select>
+
+          <label>타입2(선택)</label>
+          <select id="m2_t2"></select>
+
+          <label>지닌물건</label>
+          <div class="withMark">
+            <input id="m2_item" list="itemList" placeholder="예: 리샘열매" />
+            <span id="m2_item_mark" class="mark"></span>
+          </div>
+
+          <label>기술 1</label>
+          <div class="withMark">
+            <input id="m2_mv1" list="moveList" placeholder="예: 지진" />
+            <span id="m2_mv1_mark" class="mark"></span>
+          </div>
+
+          <label>기술 2</label>
+          <div class="withMark">
+            <input id="m2_mv2" list="moveList" placeholder="예: 역린" />
+            <span id="m2_mv2_mark" class="mark"></span>
+          </div>
+
+          <label>기술 3</label>
+          <div class="withMark">
+            <input id="m2_mv3" list="moveList" placeholder="예: 맹독" />
+            <span id="m2_mv3_mark" class="mark"></span>
+          </div>
+
+          <label>기술 4</label>
+          <div class="withMark">
+            <input id="m2_mv4" list="moveList" placeholder="예: 불꽃엄니" />
+            <span id="m2_mv4_mark" class="mark"></span>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="pokeBox">
+          <h3>3) 내 포켓몬</h3>
+
+          <label>포켓몬(한글)</label>
+          <div class="withMark">
+            <input id="m3_name" list="pokemonList" placeholder="예: 메타그로스" />
+            <span id="m3_name_mark" class="mark"></span>
+          </div>
+
+          <label>타입1(자동/수동)</label>
+          <select id="m3_t1"></select>
+
+          <label>타입2(선택)</label>
+          <select id="m3_t2"></select>
+
+          <label>지닌물건</label>
+          <div class="withMark">
+            <input id="m3_item" list="itemList" placeholder="예: 생명의구슬" />
+            <span id="m3_item_mark" class="mark"></span>
+          </div>
+
+          <label>기술 1</label>
+          <div class="withMark">
+            <input id="m3_mv1" list="moveList" placeholder="예: 칼춤" />
+            <span id="m3_mv1_mark" class="mark"></span>
+          </div>
+
+          <label>기술 2</label>
+          <div class="withMark">
+            <input id="m3_mv2" list="moveList" placeholder="예: 불릿펀치" />
+            <span id="m3_mv2_mark" class="mark"></span>
+          </div>
+
+          <label>기술 3</label>
+          <div class="withMark">
+            <input id="m3_mv3" list="moveList" placeholder="예: 코멧펀치" />
+            <span id="m3_mv3_mark" class="mark"></span>
+          </div>
+
+          <label>기술 4</label>
+          <div class="withMark">
+            <input id="m3_mv4" list="moveList" placeholder="예: 대폭발" />
+            <span id="m3_mv4_mark" class="mark"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- datalist -->
+      <datalist id="pokemonList"></datalist>
+      <datalist id="moveList"></datalist>
+      <datalist id="itemList"></datalist>
+    </section>
+
+    <!-- OPPONENT + RECOMMEND -->
+    <section class="card">
+      <h2>상대 입력 → 추천행동</h2>
+
+      <div class="row">
+        <label class="label">현재 내 선봉(활성)</label>
+        <select id="activeSelect"></select>
+      </div>
+
+      <div class="row">
+        <label class="label">상대 포켓몬(한글명 검색)</label>
+        <input id="oppName" list="pokemonList" placeholder="예: 라프라스" />
+      </div>
+
+      <details>
+        <summary>상대 관측 정보(선택, 알면 정확도 ↑)</summary>
+        <div class="row">
+          <label class="label">상대 지닌물건</label>
+          <input id="oppItemObs" list="itemList" placeholder="예: 먹다남은음식" />
+        </div>
+        <div class="row">
+          <label class="label">상대 기술(1개라도 확인)</label>
+          <input id="oppMoveObs" list="moveList" placeholder="예: 10만볼트" />
+        </div>
+      </details>
+
+      <div class="row">
+        <button id="btnRecommend" class="primary">추천행동 계산</button>
+      </div>
+
+      <div id="resultBox" class="result"></div>
+    </section>
+
+    <footer class="foot">
+      주의: 이 앱은 “세트 DB(기술/아이템/EV 등)” 기반 룰 엔진입니다. 실제 실전은 급소/명중/턴 선택 등 변수가 있어 100% 보장은 불가합니다.
+    </footer>
+  </main>
+
   <script src="./app.js"></script>
 </body>
 </html>
